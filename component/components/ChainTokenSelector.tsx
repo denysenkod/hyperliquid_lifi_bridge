@@ -1,6 +1,16 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { TokenSearchService, type SearchableToken } from '../tokenSearch';
+import { LiFiBridgeService } from '../bridge';
+import { WalletManager } from '../wallet';
 import type { ChainInfo } from '../../types/index';
+
+// Minimum balance threshold to consider as "non-zero" (to filter out dust)
+const MIN_BALANCE_THRESHOLD = 0.000001;
+
+interface TokenWithBalance extends SearchableToken {
+  balance?: string;
+  balanceUSD?: number;
+}
 
 // Hyperliquid brand colors - must match BridgeModal
 const COLORS = {
@@ -15,6 +25,7 @@ interface ChainTokenSelectorProps {
   onSelect: (chain: ChainInfo, token: SearchableToken) => void;
   onClose: () => void;
   initialChainId?: number; // Pre-select a chain when opening
+  walletAddress?: string; // User's wallet address for balance fetching
   styles?: {
     modal?: React.CSSProperties;
     overlay?: React.CSSProperties;
@@ -26,16 +37,20 @@ export const ChainTokenSelector: React.FC<ChainTokenSelectorProps> = ({
   onSelect,
   onClose,
   initialChainId,
+  walletAddress,
   styles = {},
 }) => {
   const [chainSearch, setChainSearch] = useState('');
   const [tokenSearch, setTokenSearch] = useState('');
   const [selectedChain, setSelectedChain] = useState<ChainInfo | null>(null);
-  const [tokens, setTokens] = useState<SearchableToken[]>([]);
+  const [tokens, setTokens] = useState<TokenWithBalance[]>([]);
   const [loadingTokens, setLoadingTokens] = useState(false);
+  const [loadingBalances, setLoadingBalances] = useState(false);
   const [hoveredChain, setHoveredChain] = useState<number | null>(null);
   const [hoveredToken, setHoveredToken] = useState<string | null>(null);
   const searchService = useRef(new TokenSearchService());
+  const bridgeService = useRef(new LiFiBridgeService());
+  const walletManager = useRef(new WalletManager());
 
   // Initialize with the provided chain if available
   useEffect(() => {
@@ -58,22 +73,115 @@ export const ChainTokenSelector: React.FC<ChainTokenSelectorProps> = ({
     if (!selectedChain) return;
     
     setLoadingTokens(true);
+    setLoadingBalances(false);
     try {
+      let baseTokens: SearchableToken[];
+      
       if (tokenSearch.trim()) {
         // When searching, search ALL tokens (not just popular ones)
-        const results = await searchService.current.searchTokens(selectedChain.id, tokenSearch);
-        setTokens(results);
+        baseTokens = await searchService.current.searchTokens(selectedChain.id, tokenSearch);
       } else {
         // By default, show only popular/whitelisted tokens (top 200 by market cap)
-        const popularTokens = await searchService.current.getPopularTokensForChain(selectedChain.id);
-        setTokens(popularTokens);
+        baseTokens = await searchService.current.getPopularTokensForChain(selectedChain.id);
+      }
+      
+      // Set tokens immediately so user sees something
+      setTokens(baseTokens);
+      setLoadingTokens(false);
+      
+      // If we have a wallet address, fetch balances in the background
+      if (walletAddress && baseTokens.length > 0) {
+        setLoadingBalances(true);
+        await fetchAndSortByBalances(baseTokens, selectedChain);
+        setLoadingBalances(false);
       }
     } catch (error) {
       console.error('Failed to load tokens:', error);
       setTokens([]);
-    } finally {
       setLoadingTokens(false);
+      setLoadingBalances(false);
     }
+  };
+  
+  const fetchAndSortByBalances = async (baseTokens: SearchableToken[], chain: ChainInfo) => {
+    if (!walletAddress) return;
+    
+    try {
+      // Fetch balances and prices in parallel for better performance
+      // Limit to first 50 tokens to avoid too many requests
+      const tokensToCheck = baseTokens.slice(0, 50);
+      
+      const balancePromises = tokensToCheck.map(async (token): Promise<TokenWithBalance> => {
+        try {
+          const tokenInfo = {
+            address: token.address,
+            symbol: token.symbol,
+            decimals: token.decimals,
+            chainId: token.chainId,
+            name: token.name,
+            logoURI: token.logoURI,
+          };
+          
+          const balance = await walletManager.current.getTokenBalance(
+            walletAddress,
+            tokenInfo,
+            chain.name
+          );
+          
+          const balanceNum = parseFloat(balance.formattedBalance);
+          
+          // Get token price for USD value calculation
+          let balanceUSD = 0;
+          if (balanceNum > MIN_BALANCE_THRESHOLD) {
+            const price = await bridgeService.current.getTokenPrice(chain.id, token.address);
+            if (price) {
+              balanceUSD = balanceNum * price;
+            }
+          }
+          
+          return {
+            ...token,
+            balance: balance.formattedBalance,
+            balanceUSD,
+          };
+        } catch (error) {
+          // If balance fetch fails, return token without balance
+          return { ...token };
+        }
+      });
+      
+      const tokensWithBalances = await Promise.all(balancePromises);
+      
+      // Add remaining tokens (beyond first 50) without balance info
+      const remainingTokens: TokenWithBalance[] = baseTokens.slice(50).map(t => ({ ...t }));
+      
+      // Sort: tokens with significant balances first (by USD value), then the rest
+      const withBalance = tokensWithBalances.filter(
+        t => t.balanceUSD && t.balanceUSD > 0.01 // Only show if worth more than $0.01
+      ).sort((a, b) => (b.balanceUSD || 0) - (a.balanceUSD || 0));
+      
+      const withoutBalance = [
+        ...tokensWithBalances.filter(t => !t.balanceUSD || t.balanceUSD <= 0.01),
+        ...remainingTokens,
+      ];
+      
+      setTokens([...withBalance, ...withoutBalance]);
+    } catch (error) {
+      console.error('Failed to fetch balances:', error);
+      // Keep original tokens if balance fetch fails
+    }
+  };
+  
+  // Calculate summary for tokens with balances
+  const getBalanceSummary = () => {
+    const tokensWithBalance = tokens.filter(t => t.balanceUSD && t.balanceUSD > 0.01);
+    if (tokensWithBalance.length === 0) return null;
+    
+    const totalUSD = tokensWithBalance.reduce((sum, t) => sum + (t.balanceUSD || 0), 0);
+    return {
+      count: tokensWithBalance.length,
+      totalUSD,
+    };
   };
 
   const handleSelectToken = (token: SearchableToken) => {
@@ -447,9 +555,15 @@ export const ChainTokenSelector: React.FC<ChainTokenSelectorProps> = ({
 
           {/* Right Column - Tokens (60%) */}
           <div style={defaultStyles.tokenColumn}>
-            <div style={defaultStyles.sectionHeader}>
-              <span>🪙</span>
-              {tokenSearch ? 'Search Results' : 'Popular tokens'}
+            <div style={{
+              ...defaultStyles.sectionHeader,
+              justifyContent: 'space-between',
+            }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <span>🪙</span>
+                {tokenSearch ? 'Search Results' : 'Popular tokens'}
+                {loadingBalances}
+              </div>
             </div>
             <div style={defaultStyles.list}>
               {!selectedChain ? (
@@ -509,6 +623,27 @@ export const ChainTokenSelector: React.FC<ChainTokenSelectorProps> = ({
                       <div style={defaultStyles.tokenSymbol}>{token.symbol}</div>
                       <div style={defaultStyles.tokenName}>{token.name}</div>
                     </div>
+                    {/* Balance display on the right */}
+                    {token.balanceUSD && token.balanceUSD > 0.01 && (
+                      <div style={{
+                        textAlign: 'right',
+                        marginLeft: 'auto',
+                      }}>
+                        <div style={{
+                          fontSize: '14px',
+                          fontWeight: '600',
+                          color: COLORS.foam,
+                        }}>
+                          {token.balance}
+                        </div>
+                        <div style={{
+                          fontSize: '12px',
+                          color: COLORS.aquamarine,
+                        }}>
+                          ${token.balanceUSD.toFixed(2)}
+                        </div>
+                      </div>
+                    )}
                   </div>
                 ))
               )}

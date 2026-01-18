@@ -4,6 +4,7 @@ import type { ChainBalance, ChainInfo } from '../../types/index';
 import { ChainTokenSelector } from './ChainTokenSelector';
 import type { SearchableToken } from '../tokenSearch';
 import { LiFiBridgeService, type DetailedBridgeProgress, type StepInfo } from '../bridge';
+import { DepositModal } from './DepositModal';
 
 // Quote data for display
 interface QuoteData {
@@ -48,9 +49,9 @@ const getUserFriendlyErrorMessage = (errorMessage: string): string => {
     return 'Transaction tracking failed. This can happen with MetaMask Smart Transactions. Try disabling "Smart Transactions" in MetaMask settings (Settings → Advanced → Smart Transactions) and try again.';
   }
   
-  // Transaction failed errors (slippage, price movement, etc.)
+  // Transaction failed errors (often insufficient gas for the operation)
   if (lowerMessage.includes('transactionerror') || lowerMessage.includes('transaction failed')) {
-    return 'The transaction failed on-chain. Try increasing the slippage tolerance or using a larger transaction amount.';
+    return 'Not enough tokens left for gas to execute the operation. Try decreasing the initial amount.';
   }
   
   // Slippage errors
@@ -58,14 +59,20 @@ const getUserFriendlyErrorMessage = (errorMessage: string): string => {
     return 'Price moved too much during the transaction. Try increasing slippage tolerance in settings or wait for less volatile market conditions.';
   }
   
-  // Stale quote error - fromAmount must be equal to constant
-  if (lowerMessage.includes('must be equal to constant') || lowerMessage.includes('fromamount')) {
-    return 'Quote expired. The price or amount changed since you got the quote. Please go back and try again with a fresh quote.';
+  // fromAmount validation error - this happens when using MAX balance and not leaving enough for gas
+  // The SDK expects exact amount from quote, but balance changed (gas was needed)
+  if (lowerMessage.includes('fromamount') && lowerMessage.includes('must be equal to constant')) {
+    return 'Not enough tokens left for gas to execute the operation. Try decreasing the initial amount.';
   }
   
-  // Validation errors (400 status)
+  // Other validation errors with fromAmount (amount mismatch)
+  if (lowerMessage.includes('fromamount') || lowerMessage.includes('must be equal to constant')) {
+    return 'Not enough tokens left for gas to execute the operation. Try decreasing the initial amount.';
+  }
+  
+  // Validation errors (400 status) - generic fallback
   if (lowerMessage.includes('status code 400') || lowerMessage.includes('validationerror')) {
-    return 'The quote is no longer valid. Please go back and get a new quote.';
+    return 'Not enough tokens left for gas to execute the operation. Try decreasing the initial amount.';
   }
   
   // Insufficient funds
@@ -640,6 +647,9 @@ export const BridgeModal: React.FC<BridgeModalProps> = ({
   onError,
   styles = {},
 }) => {
+  // Tab state: 'bridge' or 'deposit'
+  const [activeTab, setActiveTab] = useState<'bridge' | 'deposit'>('bridge');
+
   // Source (FROM)
   const [selectedChain, setSelectedChain] = useState<ChainBalance | null>(null);
   const [selectedToken, setSelectedToken] = useState<SearchableToken | null>(null);
@@ -1007,23 +1017,63 @@ export const BridgeModal: React.FC<BridgeModalProps> = ({
 
         {/* Content Layer */}
         <div style={{ position: 'relative', zIndex: 1 }}>
-          {/* Header */}
+          {/* Header with Tabs */}
           <div style={{
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            padding: '24px 28px 20px',
-            borderBottom: `3px solid ${COLORS.aquamarine}15`,
+            padding: '20px 28px 0',
           }}>
-            <h2 style={{
-              margin: 0,
-              color: COLORS.foam,
-              fontSize: '1.4rem',
-              fontWeight: '600',
-              letterSpacing: '-0.02em',
+            {/* Tab Buttons */}
+            <div style={{
+              display: 'flex',
+              gap: '4px',
+              background: COLORS.firefly + '80',
+              padding: '4px',
+              borderRadius: '12px',
+              border: `2px solid ${COLORS.aquamarine}20`,
             }}>
-              Bridge <span style={{ color: COLORS.aquamarine }}>&</span> Swap
-            </h2>
+              <button
+                onClick={() => setActiveTab('bridge')}
+                style={{
+                  padding: '10px 16px',
+                  fontSize: '13px',
+                  fontWeight: '600',
+                  border: 'none',
+                  borderRadius: '8px',
+                  cursor: 'pointer',
+                  background: activeTab === 'bridge' 
+                    ? `linear-gradient(135deg, ${COLORS.aquamarine} 0%, ${COLORS.aquamarine}80 100%)`
+                    : 'transparent',
+                  color: activeTab === 'bridge' ? COLORS.ebony : COLORS.foam + '80',
+                  transition: 'all 0.2s ease',
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                Bridge & Swap
+              </button>
+              <button
+                onClick={() => setActiveTab('deposit')}
+                style={{
+                  padding: '10px 16px',
+                  fontSize: '13px',
+                  fontWeight: '600',
+                  border: 'none',
+                  borderRadius: '8px',
+                  cursor: 'pointer',
+                  background: activeTab === 'deposit' 
+                    ? `linear-gradient(135deg, ${COLORS.aquamarine} 0%, ${COLORS.aquamarine}80 100%)`
+                    : 'transparent',
+                  color: activeTab === 'deposit' ? COLORS.ebony : COLORS.foam + '80',
+                  transition: 'all 0.2s ease',
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                💰 Deposit
+              </button>
+            </div>
+
+            {/* Close Button */}
             <button
               onClick={handleSafeClose}
               style={{
@@ -1055,6 +1105,13 @@ export const BridgeModal: React.FC<BridgeModalProps> = ({
               ✕
             </button>
           </div>
+          
+          {/* Tab divider */}
+          <div style={{
+            height: '3px',
+            background: `linear-gradient(90deg, transparent 0%, ${COLORS.aquamarine}30 50%, transparent 100%)`,
+            margin: '16px 28px 0',
+          }} />
 
           {/* Floating Error Toast - Above Modal */}
           {errorMessage && (
@@ -1127,8 +1184,15 @@ export const BridgeModal: React.FC<BridgeModalProps> = ({
             </div>
           )}
 
-          {/* Body - Show status page or main form */}
-          {showStatusPage && transactionProgress ? (
+          {/* Body - Show Deposit tab or Bridge tab content */}
+          {activeTab === 'deposit' ? (
+            <DepositModal
+              chains={chains}
+              walletAddress={walletAddress}
+              onClose={onClose}
+              embedded={true}
+            />
+          ) : showStatusPage && transactionProgress ? (
             <TransactionStatusPage
               progress={transactionProgress}
               onClose={onClose}
@@ -1139,6 +1203,10 @@ export const BridgeModal: React.FC<BridgeModalProps> = ({
                   // Also clear the amount since it was used
                   setAmount('');
                 }
+                // Always reset transaction active state when going back
+                // This ensures the bridge button works after failed transactions
+                isTransactionActiveRef.current = false;
+                setIsTransactionActive(false);
                 setShowStatusPage(false);
                 setTransactionProgress(null);
               }}
@@ -1169,8 +1237,9 @@ export const BridgeModal: React.FC<BridgeModalProps> = ({
                   border: `3px solid ${COLORS.aquamarine}40`,
                   borderRadius: '50px',
                   cursor: 'pointer',
-                  marginBottom: '20px',
+                  marginBottom: '12px',
                   transition: 'all 0.3s ease',
+                  width: '100%',
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.borderColor = COLORS.aquamarine;
@@ -1593,7 +1662,19 @@ export const BridgeModal: React.FC<BridgeModalProps> = ({
             {/* Bridge Button */}
             <button
               onClick={async () => {
+                // Check if transaction is already in progress
+                if (isTransactionActiveRef.current) {
+                  console.log('🚫 Bridge button clicked but transaction already active');
+                  return;
+                }
+                
                 if (selectedChain && selectedToken && destChain && destToken && amount) {
+                  console.log('🌉 Bridge button clicked', { 
+                    from: `${selectedToken.symbol} on ${selectedChain.chainName}`,
+                    to: `${destToken.symbol} on ${destChain.name}`,
+                    amount 
+                  });
+                  
                   // Validate balance
                   const amountNum = parseFloat(amount);
                   const balanceNum = parseFloat(tokenBalance);
@@ -1621,27 +1702,39 @@ export const BridgeModal: React.FC<BridgeModalProps> = ({
                     isTransactionActiveRef.current = true;
                     setShowStatusPage(true);
                     setIsTransactionActive(true);
+                    console.log('🚀 Starting bridge execution...');
                     try {
                       await onBridgeWithProgress(params, (progress) => {
                         setTransactionProgress(progress);
                         // Allow closing once transaction is completed or failed
                         if (progress.overallStatus === 'completed' || progress.overallStatus === 'failed') {
+                          console.log(`✅ Bridge ${progress.overallStatus}, resetting transaction state`);
                           isTransactionActiveRef.current = false;
                           setIsTransactionActive(false);
                         }
                       });
                     } catch (error) {
                       // Error is handled in the progress callback
+                      console.error('❌ Bridge execution error:', error);
                       isTransactionActiveRef.current = false;
                       setIsTransactionActive(false);
                     }
                   } else {
                     // Fallback to simple bridge
+                    console.log('⚠️ No onBridgeWithProgress callback, using simple bridge');
                     onBridge(params);
                   }
+                } else {
+                  console.log('⚠️ Bridge button clicked but missing required fields', {
+                    selectedChain: !!selectedChain,
+                    selectedToken: !!selectedToken,
+                    destChain: !!destChain,
+                    destToken: !!destToken,
+                    amount: !!amount
+                  });
                 }
               }}
-              disabled={!selectedChain || !selectedToken || !destChain || !destToken || !amount || parseFloat(amount) <= 0}
+              disabled={!selectedChain || !selectedToken || !destChain || !destToken || !amount || parseFloat(amount) <= 0 || isTransactionActive}
               style={{
                 width: '100%',
                 padding: '18px',
@@ -1649,30 +1742,31 @@ export const BridgeModal: React.FC<BridgeModalProps> = ({
                 fontWeight: '600',
                 border: 'none',
                 borderRadius: '16px',
-                cursor: selectedChain && amount && parseFloat(amount) > 0 ? 'pointer' : 'not-allowed',
-                background: selectedChain && amount && parseFloat(amount) > 0
+                cursor: selectedChain && amount && parseFloat(amount) > 0 && !isTransactionActive ? 'pointer' : 'not-allowed',
+                background: selectedChain && amount && parseFloat(amount) > 0 && !isTransactionActive
                   ? `linear-gradient(135deg, ${COLORS.aquamarine} 0%, ${COLORS.firefly} 150%)`
                   : COLORS.firefly + '60',
-                color: selectedChain && amount && parseFloat(amount) > 0 ? COLORS.ebony : COLORS.foam + '50',
+                color: selectedChain && amount && parseFloat(amount) > 0 && !isTransactionActive ? COLORS.ebony : COLORS.foam + '50',
                 transition: 'all 0.3s ease',
-                boxShadow: selectedChain && amount && parseFloat(amount) > 0
+                boxShadow: selectedChain && amount && parseFloat(amount) > 0 && !isTransactionActive
                   ? `0 4px 20px ${COLORS.aquamarine}40`
                   : 'none',
+                opacity: isTransactionActive ? 0.6 : 1,
               }}
               onMouseEnter={(e) => {
-                if (selectedChain && amount && parseFloat(amount) > 0) {
+                if (selectedChain && amount && parseFloat(amount) > 0 && !isTransactionActive) {
                   e.currentTarget.style.transform = 'translateY(-2px)';
                   e.currentTarget.style.boxShadow = `0 8px 30px ${COLORS.aquamarine}50`;
                 }
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.transform = 'translateY(0)';
-                if (selectedChain && amount && parseFloat(amount) > 0) {
+                if (selectedChain && amount && parseFloat(amount) > 0 && !isTransactionActive) {
                   e.currentTarget.style.boxShadow = `0 4px 20px ${COLORS.aquamarine}40`;
                 }
               }}
             >
-              {!selectedChain ? 'Select Token' : !amount || parseFloat(amount) <= 0 ? 'Enter Amount' : 'Bridge'}
+              {isTransactionActive ? 'Processing...' : !selectedChain ? 'Select Token' : !amount || parseFloat(amount) <= 0 ? 'Enter Amount' : 'Bridge'}
             </button>
           </div>
           )}
@@ -1683,6 +1777,7 @@ export const BridgeModal: React.FC<BridgeModalProps> = ({
           <ChainTokenSelector
             chains={chains}
             initialChainId={selectedChain?.chainId || 1} // Default to Ethereum
+            walletAddress={walletAddress}
             onSelect={(chain, token) => {
               const chainBalance = balances.find(b => b.chainId === chain.id);
               if (chainBalance) {
@@ -1710,6 +1805,7 @@ export const BridgeModal: React.FC<BridgeModalProps> = ({
           <ChainTokenSelector
             chains={chains}
             initialChainId={destChain?.id} // Use currently selected dest chain
+            walletAddress={walletAddress}
             onSelect={(chain, token) => {
               setDestChain(chain);
               setDestToken(token);

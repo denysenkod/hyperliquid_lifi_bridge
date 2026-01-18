@@ -37,8 +37,10 @@ export interface DetailedBridgeProgress {
   txLink?: string;
 }
 
+// Module-level singleton flag to prevent multiple SDK initializations
+let sdkInitialized = false;
+
 export class LiFiBridgeService {
-  private initialized = false;
   private chains: ChainInfo[] = [];
 
   constructor() {
@@ -46,7 +48,7 @@ export class LiFiBridgeService {
   }
 
   private initializeLiFi(): void {
-    if (this.initialized) return;
+    if (sdkInitialized) return;
 
     try {
       createConfig({
@@ -113,7 +115,7 @@ export class LiFiBridgeService {
         apiKey: "281ba4ad-e3f3-4dc1-ad8f-d19e40722416.3c03ad3e-f891-419c-8d3d-51fb3e61737d",
       });
 
-      this.initialized = true;
+      sdkInitialized = true;
       console.log('LI.FI SDK initialized');
     } catch (error) {
       console.error('Failed to initialize LI.FI:', error);
@@ -121,7 +123,7 @@ export class LiFiBridgeService {
   }
 
   async getAllChains(): Promise<ChainInfo[]> {
-    if (!this.initialized) {
+    if (!sdkInitialized) {
       this.initializeLiFi();
     }
 
@@ -180,7 +182,7 @@ export class LiFiBridgeService {
     userAddress: string,
     tokenSymbol: string = 'USDC'
   ): Promise<LiFiStep> {
-    if (!this.initialized) {
+    if (!sdkInitialized) {
       this.initializeLiFi();
     }
 
@@ -223,7 +225,7 @@ export class LiFiBridgeService {
     tokenAmount: string,
     userAddress: string
   ): Promise<LiFiStep> {
-    if (!this.initialized) {
+    if (!sdkInitialized) {
       this.initializeLiFi();
     }
 

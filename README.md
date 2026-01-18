@@ -1,193 +1,214 @@
-# HyprEVM Bridge Widget
+# @aspect-build/hyperliquid-deposit
 
-A portable React component that allows users to bridge USDC from any supported chain to HyprEVM using LI.FI's cross-chain infrastructure.
+One-click deposit to HyperLiquid trading account from any chain. Automatically bridges tokens to Arbitrum USDC and deposits to HyperLiquid.
+
+[![npm version](https://img.shields.io/npm/v/@aspect-build/hyperliquid-deposit.svg)](https://www.npmjs.com/package/@aspect-build/hyperliquid-deposit)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## Features
 
-- **⚛️ React Component** - Modern React component with TypeScript support
-- **🎨 Customizable Styling** - Fully customizable via props (no CSS imports required)
-- **🔗 Wallet Integration** - Seamless MetaMask connection
-- **🌐 Dynamic Chain Support** - Automatically fetches all supported chains from LI.FI
-- **💰 USDC Balances** - Displays USDC balances across all supported chains
-- **🌉 One-Click Bridging** - Simple interface to bridge from any chain to HyprEVM
-- **📱 Responsive Design** - Works on desktop and mobile
-- **📦 Easy to Publish** - Ready to publish to npm
+- 🚀 **One-Click Deposits** - Deposit to HyperLiquid from any supported chain
+- 🌉 **Auto-Bridging** - Automatically bridges tokens to Arbitrum USDC via LI.FI
+- 💰 **Multi-Chain Support** - Supports 60+ chains including Ethereum, Arbitrum, Base, Monad, etc.
+- 🎯 **Smart Routing** - Finds optimal routes considering fees, speed, and gas
+- ⚛️ **React Component** - Drop-in React component with TypeScript support
+- 🎨 **Customizable** - Custom button rendering, styles, and callbacks
+- 📱 **Responsive** - Works on desktop and mobile
 
-## Project Structure
-
-```
-HyprTrader/
-├── component/              # React component source code
-│   ├── index.tsx          # Main exports
-│   ├── HyprBridgeWidget.tsx  # Main React component
-│   ├── components/        # Sub-components
-│   │   ├── ConnectView.tsx
-│   │   ├── BridgeButton.tsx
-│   │   └── BridgeModal.tsx
-│   ├── styles/            # Default styles
-│   │   └── defaultStyles.ts
-│   ├── bridge.ts          # LI.FI bridge service integration
-│   └── wallet.ts          # Wallet management (MetaMask)
-├── types/                 # TypeScript type definitions
-├── example/               # Example Vite + React app
-├── dist/                  # Compiled output (generated)
-└── package.json           # Project dependencies
-```
-
-## Installation (For Component Library Development)
-
-This project uses [Bun](https://bun.sh/) as the package manager and runtime. Install Bun first:
+## Installation
 
 ```bash
-curl -fsSL https://bun.sh/install | bash
+# npm
+npm install @aspect-build/hyperliquid-deposit
+
+# yarn
+yarn add @aspect-build/hyperliquid-deposit
+
+# bun
+bun add @aspect-build/hyperliquid-deposit
+
+# pnpm
+pnpm add @aspect-build/hyperliquid-deposit
 ```
 
-Then install dependencies:
+## Quick Start
 
-```bash
-bun install
-```
-
-## Building the Component
-
-Build the component library:
-
-```bash
-bun run build
-```
-
-This will generate the distributable files in the `dist/` directory.
-
-## Running the Example App
-
-1. First, build the component:
-```bash
-bun run build
-```
-
-2. Install example app dependencies:
-```bash
-cd example && bun install
-```
-
-3. Run the example app:
-```bash
-bun run dev:example
-```
-
-This will start the Vite dev server at `http://localhost:5173`
-
-## Usage in Your React App
-
-### 1. Install the component (once published to npm)
-
-```bash
-npm install hyprliquid-bridge-widget
-# or
-bun add hyprliquid-bridge-widget
-```
-
-### 2. Use in your React component
+### Basic Usage
 
 ```tsx
-import { HyprBridgeWidget } from 'hyprliquid-bridge-widget';
-import type { BridgeWidgetConfig } from 'hyprliquid-bridge-widget';
-
-const config: BridgeWidgetConfig = {
-  targetChainId: 998899,     // Your target chain ID
-  targetChainName: 'HyprEVM', // Your target chain name
-  tokenSymbol: 'USDC'         // Token to bridge (default: USDC)
-};
+import { HyperliquidDeposit } from '@aspect-build/hyperliquid-deposit';
 
 function App() {
   return (
-    <div>
-      <HyprBridgeWidget config={config} />
-    </div>
+    <HyperliquidDeposit
+      walletAddress="0x..." // Connected wallet address
+      onDepositComplete={(txHash, amount) => {
+        console.log(`Deposited $${amount} USDC! Tx: ${txHash}`);
+      }}
+    />
   );
 }
 ```
 
-### 3. Customize styling (optional)
+### With Custom Button
 
 ```tsx
-import { HyprBridgeWidget } from 'hyprliquid-bridge-widget';
-import type { BridgeWidgetStyles } from 'hyprliquid-bridge-widget';
-
-const customStyles: BridgeWidgetStyles = {
-  container: {
-    background: '#ffffff',
-    borderRadius: '16px',
-    padding: '24px',
-  },
-  connectButton: {
-    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-    fontSize: '1.2rem',
-  },
-  bridgeButton: {
-    background: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
-  },
-};
+import { HyperliquidDeposit } from '@aspect-build/hyperliquid-deposit';
 
 function App() {
-  return <HyprBridgeWidget config={config} styles={customStyles} />;
+  return (
+    <HyperliquidDeposit
+      walletAddress={address}
+      renderButton={({ onClick, disabled }) => (
+        <button 
+          onClick={onClick} 
+          disabled={disabled}
+          className="my-custom-button"
+        >
+          💰 Fund Trading Account
+        </button>
+      )}
+    />
+  );
 }
 ```
 
-## Configuration
+### Using the Hook
 
-```typescript
-interface BridgeWidgetConfig {
-  targetChainId: number;        // Chain ID to bridge to
-  targetChainName: string;      // Display name of target chain
-  tokenSymbol?: string;         // Token symbol (default: 'USDC')
-}
+```tsx
+import { useHyperliquidDeposit } from '@aspect-build/hyperliquid-deposit';
 
-interface BridgeWidgetStyles {
-  container?: CSSProperties;
-  connectButton?: CSSProperties;
-  bridgeButton?: CSSProperties;
-  walletInfo?: CSSProperties;
-  modal?: {
-    overlay?: CSSProperties;
-    content?: CSSProperties;
-    header?: CSSProperties;
-    closeButton?: CSSProperties;
-    body?: CSSProperties;
-  };
-  balanceItem?: CSSProperties;
-  chainInfo?: CSSProperties;
-  bridgeFromButton?: CSSProperties;
-  infoBox?: CSSProperties;
+function App() {
+  const { openDeposit, DepositModal } = useHyperliquidDeposit({
+    walletAddress: '0x...',
+  });
+
+  return (
+    <>
+      <button onClick={openDeposit}>
+        Open Deposit Modal
+      </button>
+      <DepositModal />
+    </>
+  );
 }
 ```
 
-## Development
+### Standalone Modal
 
-### Watch Mode
+```tsx
+import { DepositModal } from '@aspect-build/hyperliquid-deposit';
 
-```bash
-bun run build:watch
+function App() {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <>
+      <button onClick={() => setIsOpen(true)}>Deposit</button>
+      
+      {isOpen && (
+        <DepositModal
+          chains={chains}
+          walletAddress="0x..."
+          onClose={() => setIsOpen(false)}
+        />
+      )}
+    </>
+  );
+}
 ```
 
-### Clean Build
+## API Reference
 
-```bash
-bun run clean && bun run build
+### `<HyperliquidDeposit />`
+
+Main component that renders a deposit button and modal.
+
+| Prop | Type | Required | Description |
+|------|------|----------|-------------|
+| `walletAddress` | `string` | ✅ | Connected wallet address |
+| `chains` | `ChainInfo[]` | ❌ | Custom chains (auto-fetched if not provided) |
+| `onDepositComplete` | `(txHash: string, amount: number) => void` | ❌ | Callback on successful deposit |
+| `onDepositError` | `(error: string) => void` | ❌ | Callback on deposit error |
+| `renderButton` | `(props: { onClick, disabled }) => ReactNode` | ❌ | Custom button renderer |
+| `buttonText` | `string` | ❌ | Button text (default: "Deposit to HyperLiquid") |
+| `buttonStyle` | `CSSProperties` | ❌ | Custom button styles |
+| `buttonClassName` | `string` | ❌ | Custom button class name |
+| `disabled` | `boolean` | ❌ | Disable the button |
+| `modalStyles` | `{ modal?, overlay? }` | ❌ | Custom modal styles |
+
+### `useHyperliquidDeposit()`
+
+Hook for programmatic control.
+
+```tsx
+const {
+  isOpen,        // boolean - modal open state
+  openDeposit,   // () => void - open the modal
+  closeDeposit,  // () => void - close the modal
+  DepositModal,  // React component - the modal
+} = useHyperliquidDeposit(props);
 ```
 
-## Technical Details
+### Constants
 
-- **LI.FI SDK** - Uses LI.FI for cross-chain bridging and chain discovery
-- **Viem** - Ethereum library for wallet interactions and contract calls
-- **TypeScript** - Fully typed for better developer experience
-- **No Framework Dependencies** - Pure TypeScript/JavaScript, works with any framework
+```tsx
+import { 
+  HYPERLIQUID_BRIDGE_ADDRESS,  // HyperLiquid bridge contract on Arbitrum
+  MIN_HYPERLIQUID_DEPOSIT_USD  // Minimum deposit ($5)
+} from '@aspect-build/hyperliquid-deposit';
+```
+
+## How It Works
+
+1. **User enters amount** - e.g., $50 USDC
+2. **Scans balances** - Checks all chains for available tokens
+3. **Calculates optimal route** - Finds best bridges considering fees & speed
+4. **Executes bridges** - Bridges tokens to Arbitrum USDC
+5. **Deposits to HyperLiquid** - Transfers USDC to HyperLiquid bridge contract
+
+```
+Your Wallet (any chain)
+        ↓
+   [LI.FI Bridge]
+        ↓
+  Arbitrum USDC
+        ↓
+ HyperLiquid Bridge Contract
+        ↓
+ HyperLiquid Trading Account
+```
+
+## Supported Chains
+
+The component automatically fetches supported chains from LI.FI, including:
+
+- Ethereum, Arbitrum, Base, Optimism, Polygon
+- BSC, Avalanche, Fantom, Gnosis
+- Monad, HyperEVM, Linea, zkSync, Scroll
+- And 50+ more...
 
 ## Requirements
 
+- React 18+
 - MetaMask or compatible Web3 wallet
-- USDC balance on source chain
-- Modern browser with ES2022 support
+- Tokens on any supported chain
+
+## Development
+
+```bash
+# Install dependencies
+bun install
+
+# Build
+bun run build
+
+# Watch mode
+bun run build:watch
+
+# Run example
+bun run dev:example
+```
 
 ## License
 

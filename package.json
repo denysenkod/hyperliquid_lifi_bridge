@@ -1,7 +1,7 @@
 {
-  "name": "hyprliquid-bridge-widget",
+  "name": "hyperliquid-deposit",
   "version": "1.0.0",
-  "description": "Bridge widget for HyprEVM using LI.FI - React Component",
+  "description": "One-click deposit to HyperLiquid trading account from any chain. Automatically bridges tokens to Arbitrum USDC and deposits to HyperLiquid.",
   "type": "module",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
@@ -22,28 +22,39 @@
     "dev:example": "cd example && bun run dev",
     "build:example": "cd example && bun run build",
     "clean": "rm -rf dist",
-    "explore": "bun run explore-lifi.ts",
-    "extract-tokens": "bun run extract-tokens.ts",
-    "extract-tradeable": "bun run extract-tradeable-tokens.ts",
-    "demo-search": "bun run demo-token-search.ts"
+    "prepublishOnly": "bun run build"
   },
   "keywords": [
+    "hyperliquid",
+    "deposit",
     "bridge",
     "lifi",
-    "hyprliquid",
+    "arbitrum",
+    "usdc",
     "react",
     "react-component",
     "crypto",
-    "web3"
+    "web3",
+    "defi",
+    "trading"
   ],
-  "author": "",
+  "author": "Aspect Build",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aspect-build/hyperliquid-deposit"
+  },
+  "homepage": "https://github.com/aspect-build/hyperliquid-deposit#readme",
+  "bugs": {
+    "url": "https://github.com/aspect-build/hyperliquid-deposit/issues"
+  },
   "peerDependencies": {
     "react": "^18.0.0",
     "react-dom": "^18.0.0"
   },
   "dependencies": {
     "@lifi/sdk": "^3.5.0",
+    "ethers": "^5.7.0 || ^6.0.0",
     "viem": "^2.21.0"
   },
   "devDependencies": {
