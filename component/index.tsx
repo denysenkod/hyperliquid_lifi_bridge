@@ -31,7 +31,7 @@ export type { BridgeParams } from './components/BridgeModal';
 export type { DetailedBridgeProgress, StepInfo, BridgeProgress } from './bridge';
 
 // Bridge service (for advanced usage)
-export { LiFiBridgeService } from './bridge';
+export { LiFiBridgeService, setWalletProvider } from './bridge';
 
 // Top tokens whitelist exports
 export { TOP_TOKENS_BY_MARKETCAP, isTopToken, getTokenRank, sortByMarketCap } from './topTokens';

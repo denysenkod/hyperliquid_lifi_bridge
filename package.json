@@ -1,6 +1,6 @@
 {
   "name": "hyperliquid-deposit",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "One-click deposit to HyperLiquid trading account from any chain. Automatically bridges tokens to Arbitrum USDC and deposits to HyperLiquid.",
   "type": "module",
   "main": "./dist/index.js",

@@ -1,0 +1,231 @@
+:root {
+  --bg-primary: #04060C;
+  --bg-secondary: #0F3933;
+  --accent: #97FCE4;
+  --text-primary: #F5FEFD;
+  --text-secondary: rgba(245, 254, 253, 0.6);
+  
+  /* Telegram theme variables */
+  --tg-theme-bg-color: #04060C;
+  --tg-theme-text-color: #F5FEFD;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  height: 100%;
+  width: 100%;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  background: var(--tg-theme-bg-color, var(--bg-primary));
+  color: var(--tg-theme-text-color, var(--text-primary));
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  padding: 24px;
+}
+
+.background-gradient {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(ellipse at top, rgba(151, 252, 228, 0.15) 0%, transparent 50%),
+    radial-gradient(ellipse at bottom right, rgba(15, 57, 51, 0.4) 0%, transparent 50%),
+    var(--bg-primary);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.container {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 400px;
+  gap: 24px;
+}
+
+.logo-container {
+  width: 100px;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(151, 252, 228, 0.1);
+  border-radius: 28px;
+  border: 1px solid rgba(151, 252, 228, 0.2);
+  animation: pulse 3s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+.title {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+  letter-spacing: -0.5px;
+}
+
+.subtitle {
+  font-size: 16px;
+  color: var(--text-secondary);
+  margin-top: -8px;
+}
+
+.action-area {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.connect-button {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 20px 32px;
+  font-size: 18px;
+  font-weight: 700;
+  border: none;
+  border-radius: 16px;
+  cursor: pointer;
+  background: linear-gradient(135deg, var(--accent) 0%, var(--bg-secondary) 150%);
+  color: var(--bg-primary);
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 24px rgba(151, 252, 228, 0.3);
+}
+
+.connect-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(151, 252, 228, 0.4);
+}
+
+.connect-button:active {
+  transform: translateY(0);
+}
+
+.wallet-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: rgba(151, 252, 228, 0.1);
+  border: 1px solid rgba(151, 252, 228, 0.2);
+  border-radius: 12px;
+  width: 100%;
+  margin-bottom: 8px;
+}
+
+.wallet-label {
+  font-size: 12px;
+  color: var(--accent);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.wallet-address {
+  flex: 1;
+  font-size: 14px;
+  font-family: 'SF Mono', Monaco, 'Courier New', monospace;
+  color: var(--text-primary);
+}
+
+.disconnect-btn {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 8px;
+  background: rgba(255, 100, 100, 0.2);
+  color: #ff6464;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s;
+}
+
+.disconnect-btn:hover {
+  background: rgba(255, 100, 100, 0.3);
+}
+
+.hint {
+  font-size: 14px;
+  color: var(--text-secondary);
+  text-align: center;
+}
+
+.footer {
+  position: fixed;
+  bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.footer strong {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.container > * {
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+.container > *:nth-child(1) { animation-delay: 0s; }
+.container > *:nth-child(2) { animation-delay: 0.1s; }
+.container > *:nth-child(3) { animation-delay: 0.15s; }
+.container > *:nth-child(4) { animation-delay: 0.2s; }
+
+/* Mobile optimizations */
+@media (max-width: 480px) {
+  .app {
+    padding: 16px;
+  }
+  
+  .title {
+    font-size: 28px;
+  }
+  
+  .connect-button {
+    padding: 18px 24px;
+    font-size: 16px;
+  }
+}

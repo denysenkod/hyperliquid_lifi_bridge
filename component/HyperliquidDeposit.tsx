@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { DepositModal } from './components/DepositModal';
-import { LiFiBridgeService } from './bridge';
+import { LiFiBridgeService, setWalletProvider } from './bridge';
 import type { ChainInfo } from '../types/index';
 
 // Hyperliquid brand colors
@@ -64,6 +64,12 @@ export interface HyperliquidDepositProps {
     modal?: React.CSSProperties;
     overlay?: React.CSSProperties;
   };
+  
+  /**
+   * Optional: External wallet provider (e.g., from WalletConnect)
+   * Required for environments without window.ethereum (like Telegram mini apps)
+   */
+  walletProvider?: any;
 }
 
 /**
@@ -99,10 +105,18 @@ export const HyperliquidDeposit: React.FC<HyperliquidDepositProps> = ({
   buttonClassName,
   disabled = false,
   modalStyles,
+  walletProvider,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [chains, setChains] = useState<ChainInfo[]>(customChains || []);
   const [isLoading, setIsLoading] = useState(!customChains);
+
+  // Set external wallet provider if provided
+  useEffect(() => {
+    if (walletProvider) {
+      setWalletProvider(walletProvider);
+    }
+  }, [walletProvider]);
 
   // Fetch chains if not provided
   useEffect(() => {
@@ -131,9 +145,13 @@ export const HyperliquidDeposit: React.FC<HyperliquidDepositProps> = ({
 
   const handleOpen = useCallback(() => {
     if (!disabled && !isLoading && walletAddress) {
+      // Ensure provider is set before opening
+      if (walletProvider) {
+        setWalletProvider(walletProvider);
+      }
       setIsOpen(true);
     }
-  }, [disabled, isLoading, walletAddress]);
+  }, [disabled, isLoading, walletAddress, walletProvider]);
 
   const handleClose = useCallback(() => {
     setIsOpen(false);

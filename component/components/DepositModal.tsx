@@ -1321,14 +1321,13 @@ export const DepositModal: React.FC<DepositModalProps> = ({
       justifyContent: 'center',
       ...styles.overlay,
     }}>
-      {/* Backdrop */}
+      {/* Backdrop - fully opaque to hide background */}
       <div
         onClick={(step === 'executing' || step === 'depositing') ? undefined : onClose}
         style={{
           position: 'absolute',
           inset: 0,
-          background: 'rgba(0, 0, 0, 0.8)',
-          backdropFilter: 'blur(8px)',
+          background: COLORS.ebony,
           cursor: (step === 'executing' || step === 'depositing') ? 'not-allowed' : 'pointer',
         }}
       />

@@ -39,6 +39,32 @@ export interface DetailedBridgeProgress {
 
 // Module-level singleton flag to prevent multiple SDK initializations
 let sdkInitialized = false;
+// External wallet provider (for WalletConnect, etc.)
+let externalWalletProvider: any = null;
+
+/**
+ * Set an external wallet provider (e.g., from WalletConnect)
+ * This should be called before any bridge operations in environments without window.ethereum
+ */
+export function setWalletProvider(provider: any): void {
+  externalWalletProvider = provider;
+  // Reset SDK so it reinitializes with new provider
+  sdkInitialized = false;
+  console.log('🔌 External wallet provider set');
+}
+
+/**
+ * Get the active wallet provider (external or window.ethereum)
+ */
+function getWalletProvider(): any {
+  if (externalWalletProvider) {
+    return externalWalletProvider;
+  }
+  if (typeof window !== 'undefined' && window.ethereum) {
+    return window.ethereum;
+  }
+  return null;
+}
 
 export class LiFiBridgeService {
   private chains: ChainInfo[] = [];
@@ -57,17 +83,18 @@ export class LiFiBridgeService {
           // EVM chains (Ethereum, Arbitrum, Base, Polygon, etc.)
           EVM({
             getWalletClient: async () => {
-              if (!window.ethereum) {
-                throw new Error('No wallet provider found');
+              const provider = getWalletProvider();
+              if (!provider) {
+                throw new Error('No wallet provider found. Please connect a wallet first.');
               }
               
-              // Get the current account from MetaMask
-              const accounts = await window.ethereum.request({ 
+              // Get the current account
+              const accounts = await provider.request({ 
                 method: 'eth_requestAccounts' 
               });
               
               // Get the current chain ID
-              const chainIdHex = await window.ethereum.request({ 
+              const chainIdHex = await provider.request({ 
                 method: 'eth_chainId' 
               });
               const currentChainId = parseInt(chainIdHex, 16);
@@ -75,28 +102,29 @@ export class LiFiBridgeService {
               return createWalletClient({
                 account: accounts[0],
                 chain: { id: currentChainId } as any,
-                transport: custom(window.ethereum),
+                transport: custom(provider),
               }) as any;
             },
             switchChain: async (chainId) => {
-              if (!window.ethereum) {
-                throw new Error('No wallet provider found');
+              const provider = getWalletProvider();
+              if (!provider) {
+                throw new Error('No wallet provider found. Please connect a wallet first.');
               }
 
-              await window.ethereum.request({
+              await provider.request({
                 method: 'wallet_switchEthereumChain',
                 params: [{ chainId: `0x${chainId.toString(16)}` }],
               });
 
               // Get the current account after chain switch
-              const accounts = await window.ethereum.request({ 
+              const accounts = await provider.request({ 
                 method: 'eth_requestAccounts' 
               });
 
               return createWalletClient({
                 account: accounts[0],
                 chain: { id: chainId } as any,
-                transport: custom(window.ethereum),
+                transport: custom(provider),
               }) as any;
             },
           }),
