@@ -1,0 +1,57 @@
+{
+  "name": "hyprliquid-bridge-widget",
+  "version": "1.0.0",
+  "description": "Bridge widget for HyprEVM using LI.FI - React Component",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "build:watch": "tsup --watch",
+    "dev:example": "cd example && bun run dev",
+    "build:example": "cd example && bun run build",
+    "clean": "rm -rf dist",
+    "explore": "bun run explore-lifi.ts",
+    "extract-tokens": "bun run extract-tokens.ts",
+    "extract-tradeable": "bun run extract-tradeable-tokens.ts",
+    "demo-search": "bun run demo-token-search.ts"
+  },
+  "keywords": [
+    "bridge",
+    "lifi",
+    "hyprliquid",
+    "react",
+    "react-component",
+    "crypto",
+    "web3"
+  ],
+  "author": "",
+  "license": "MIT",
+  "peerDependencies": {
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0"
+  },
+  "dependencies": {
+    "@lifi/sdk": "^3.5.0",
+    "viem": "^2.21.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "tsup": "^8.0.0",
+    "typescript": "^5.3.0"
+  }
+}

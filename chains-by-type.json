@@ -1,0 +1,315 @@
+{
+  "EVM": [
+    {
+      "id": 1,
+      "name": "Ethereum",
+      "key": "eth"
+    },
+    {
+      "id": 42161,
+      "name": "Arbitrum",
+      "key": "arb"
+    },
+    {
+      "id": 8453,
+      "name": "Base",
+      "key": "bas"
+    },
+    {
+      "id": 1337,
+      "name": "Hyperliquid",
+      "key": "hpl"
+    },
+    {
+      "id": 999,
+      "name": "HyperEVM",
+      "key": "hyp"
+    },
+    {
+      "id": 143,
+      "name": "Monad",
+      "key": "mon"
+    },
+    {
+      "id": 56,
+      "name": "BSC",
+      "key": "bsc"
+    },
+    {
+      "id": 10,
+      "name": "Optimism",
+      "key": "opt"
+    },
+    {
+      "id": 137,
+      "name": "Polygon",
+      "key": "pol"
+    },
+    {
+      "id": 43114,
+      "name": "Avalanche",
+      "key": "ava"
+    },
+    {
+      "id": 100,
+      "name": "Gnosis",
+      "key": "dai"
+    },
+    {
+      "id": 1088,
+      "name": "Metis",
+      "key": "mam"
+    },
+    {
+      "id": 1135,
+      "name": "Lisk",
+      "key": "lsk"
+    },
+    {
+      "id": 122,
+      "name": "FUSE",
+      "key": "fus"
+    },
+    {
+      "id": 1284,
+      "name": "Moonbeam",
+      "key": "moo"
+    },
+    {
+      "id": 130,
+      "name": "Unichain",
+      "key": "uni"
+    },
+    {
+      "id": 1329,
+      "name": "Sei",
+      "key": "sei"
+    },
+    {
+      "id": 13371,
+      "name": "Immutable zkEVM",
+      "key": "imx"
+    },
+    {
+      "id": 14,
+      "name": "Flare",
+      "key": "flr"
+    },
+    {
+      "id": 146,
+      "name": "Sonic",
+      "key": "son"
+    },
+    {
+      "id": 1480,
+      "name": "Vana",
+      "key": "van"
+    },
+    {
+      "id": 1625,
+      "name": "Gravity",
+      "key": "gra"
+    },
+    {
+      "id": 167000,
+      "name": "Taiko",
+      "key": "tai"
+    },
+    {
+      "id": 1868,
+      "name": "Soneium",
+      "key": "soe"
+    },
+    {
+      "id": 1923,
+      "name": "Swellchain",
+      "key": "swl"
+    },
+    {
+      "id": 2020,
+      "name": "Ronin",
+      "key": "ron"
+    },
+    {
+      "id": 204,
+      "name": "opBNB",
+      "key": "opb"
+    },
+    {
+      "id": 21000000,
+      "name": "Corn",
+      "key": "crn"
+    },
+    {
+      "id": 232,
+      "name": "Lens",
+      "key": "lns"
+    },
+    {
+      "id": 25,
+      "name": "Cronos",
+      "key": "cro"
+    },
+    {
+      "id": 252,
+      "name": "Fraxtal",
+      "key": "fra"
+    },
+    {
+      "id": 2741,
+      "name": "Abstract",
+      "key": "abs"
+    },
+    {
+      "id": 288,
+      "name": "Boba",
+      "key": "bob"
+    },
+    {
+      "id": 30,
+      "name": "Rootstock",
+      "key": "rsk"
+    },
+    {
+      "id": 324,
+      "name": "zkSync",
+      "key": "era"
+    },
+    {
+      "id": 33139,
+      "name": "Apechain",
+      "key": "ape"
+    },
+    {
+      "id": 34443,
+      "name": "Mode",
+      "key": "mod"
+    },
+    {
+      "id": 42220,
+      "name": "Celo",
+      "key": "cel"
+    },
+    {
+      "id": 42793,
+      "name": "Etherlink",
+      "key": "etl"
+    },
+    {
+      "id": 43111,
+      "name": "Hemi",
+      "key": "hmi"
+    },
+    {
+      "id": 480,
+      "name": "World Chain",
+      "key": "wcc"
+    },
+    {
+      "id": 50,
+      "name": "XDC",
+      "key": "xdc"
+    },
+    {
+      "id": 5000,
+      "name": "Mantle",
+      "key": "mnt"
+    },
+    {
+      "id": 50104,
+      "name": "Sophon",
+      "key": "sop"
+    },
+    {
+      "id": 534352,
+      "name": "Scroll",
+      "key": "scl"
+    },
+    {
+      "id": 55244,
+      "name": "Superposition",
+      "key": "sup"
+    },
+    {
+      "id": 57073,
+      "name": "Ink",
+      "key": "ink"
+    },
+    {
+      "id": 59144,
+      "name": "Linea",
+      "key": "lna"
+    },
+    {
+      "id": 60808,
+      "name": "BOB",
+      "key": "boc"
+    },
+    {
+      "id": 747,
+      "name": "Flow",
+      "key": "flw"
+    },
+    {
+      "id": 747474,
+      "name": "Katana",
+      "key": "kat"
+    },
+    {
+      "id": 80094,
+      "name": "Berachain",
+      "key": "ber"
+    },
+    {
+      "id": 81457,
+      "name": "Blast",
+      "key": "bls"
+    },
+    {
+      "id": 8217,
+      "name": "Kaia",
+      "key": "kai"
+    },
+    {
+      "id": 88,
+      "name": "Viction",
+      "key": "vic"
+    },
+    {
+      "id": 9745,
+      "name": "Plasma",
+      "key": "pla"
+    },
+    {
+      "id": 988,
+      "name": "Stable",
+      "key": "sta"
+    },
+    {
+      "id": 98866,
+      "name": "Plume",
+      "key": "plu"
+    }
+  ],
+  "SVM": [
+    {
+      "id": 1151111081099710,
+      "name": "Solana",
+      "key": "sol"
+    }
+  ],
+  "UTXO": [
+    {
+      "id": 20000000000001,
+      "name": "Bitcoin",
+      "key": "btc"
+    }
+  ],
+  "MVM": [
+    {
+      "id": 9270000000000000,
+      "name": "Sui",
+      "key": "sui"
+    }
+  ]
+}

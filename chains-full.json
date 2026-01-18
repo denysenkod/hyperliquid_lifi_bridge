@@ -1,0 +1,494 @@
+{
+  "totalChains": 61,
+  "lastUpdated": "2026-01-17T20:18:01.818Z",
+  "chains": [
+    {
+      "id": 1,
+      "name": "Ethereum",
+      "key": "eth",
+      "chainType": "EVM",
+      "nativeToken": "ETH",
+      "logoURI": "https://raw.githubusercontent.com/lifinance/types/main/src/assets/icons/chains/ethereum.svg"
+    },
+    {
+      "id": 1151111081099710,
+      "name": "Solana",
+      "key": "sol",
+      "chainType": "SVM",
+      "nativeToken": "SOL",
+      "logoURI": "https://raw.githubusercontent.com/lifinance/types/main/src/assets/icons/chains/solana.svg"
+    },
+    {
+      "id": 42161,
+      "name": "Arbitrum",
+      "key": "arb",
+      "chainType": "EVM",
+      "nativeToken": "ETH",
+      "logoURI": "https://raw.githubusercontent.com/lifinance/types/main/src/assets/icons/chains/arbitrum.svg"
+    },
+    {
+      "id": 8453,
+      "name": "Base",
+      "key": "bas",
+      "chainType": "EVM",
+      "nativeToken": "ETH",
+      "logoURI": "https://raw.githubusercontent.com/lifinance/types/main/src/assets/icons/chains/base.svg"
+    },
+    {
+      "id": 1337,
+      "name": "Hyperliquid",
+      "key": "hpl",
+      "chainType": "EVM",
+      "nativeToken": "USDC",
+      "logoURI": "https://raw.githubusercontent.com/lifinance/types/main/src/assets/icons/chains/hyperliquid.svg"
+    },
+    {
+      "id": 999,
+      "name": "HyperEVM",
+      "key": "hyp",
+      "chainType": "EVM",
+      "nativeToken": "HYPE",
+      "logoURI": "https://raw.githubusercontent.com/lifinance/types/main/src/assets/icons/chains/hyperevm.svg"
+    },
+    {
+      "id": 143,
+      "name": "Monad",
+      "key": "mon",
+      "chainType": "EVM",
+      "nativeToken": "MON",
+      "logoURI": "https://raw.githubusercontent.com/lifinance/types/main/src/assets/icons/chains/monad.svg"
+    },
+    {
+      "id": 56,
+      "name": "BSC",
+      "key": "bsc",
+      "chainType": "EVM",
+      "nativeToken": "BNB",
+      "logoURI": "https://raw.githubusercontent.com/lifinance/types/main/src/assets/icons/chains/bsc.svg"
+    },
+    {
+      "id": 20000000000001,
+      "name": "Bitcoin",
+      "key": "btc",
+      "chainType": "UTXO",
+      "nativeToken": "BTC",
+      "logoURI": "https://raw.githubusercontent.com/lifinance/types/main/src/assets/icons/chains/bitcoin.svg"
+    },
+    {
+      "id": 9270000000000000,
+      "name": "Sui",
+      "key": "sui",
+      "chainType": "MVM",
+      "nativeToken": "SUI",
+      "logoURI": "https://raw.githubusercontent.com/lifinance/types/main/src/assets/icons/chains/sui.svg"
+    },
+    {
+      "id": 10,
+      "name": "Optimism",
+      "key": "opt",
+      "chainType": "EVM",
+      "nativeToken": "ETH",
+      "logoURI": "https://raw.githubusercontent.com/lifinance/types/main/src/assets/icons/chains/optimism.svg"
+    },
+    {
+      "id": 137,
+      "name": "Polygon",
+      "key": "pol",
+      "chainType": "EVM",
+      "nativeToken": "POL",
+      "logoURI": "https://raw.githubusercontent.com/lifinance/types/main/src/assets/icons/chains/polygon.svg"
+    },
+    {
+      "id": 43114,
+      "name": "Avalanche",
+      "key": "ava",
+      "chainType": "EVM",
+      "nativeToken": "AVAX",
+      "logoURI": "https://raw.githubusercontent.com/lifinance/types/main/src/assets/icons/chains/avalanche.svg"
+    },
+    {
+      "id": 100,
+      "name": "Gnosis",
+      "key": "dai",
+      "chainType": "EVM",
+      "nativeToken": "xDAI",
+      "logoURI": "https://raw.githubusercontent.com/lifinance/types/main/src/assets/icons/chains/gnosis.svg"
+    },
+    {
+      "id": 1088,
+      "name": "Metis",
+      "key": "mam",
+      "chainType": "EVM",
+      "nativeToken": "METIS",
+      "logoURI": "https://raw.githubusercontent.com/lifinance/types/main/src/assets/icons/chains/metis.svg"
+    },
+    {
+      "id": 1135,
+      "name": "Lisk",
+      "key": "lsk",
+      "chainType": "EVM",
+      "nativeToken": "ETH",
+      "logoURI": "https://raw.githubusercontent.com/lifinance/types/main/src/assets/icons/chains/lisk.svg"
+    },
+    {
+      "id": 122,
+      "name": "FUSE",
+      "key": "fus",
+      "chainType": "EVM",
+      "nativeToken": "FUSE",
+      "logoURI": "https://raw.githubusercontent.com/lifinance/types/main/src/assets/icons/chains/fuse.svg"
+    },
+    {
+      "id": 1284,
+      "name": "Moonbeam",
+      "key": "moo",
+      "chainType": "EVM",
+      "nativeToken": "GLMR",
+      "logoURI": "https://raw.githubusercontent.com/lifinance/types/main/src/assets/icons/chains/moonbeam.svg"
+    },
+    {
+      "id": 130,
+      "name": "Unichain",
+      "key": "uni",
+      "chainType": "EVM",
+      "nativeToken": "ETH",
+      "logoURI": "https://raw.githubusercontent.com/lifinance/types/main/src/assets/icons/chains/unichain.svg"
+    },
+    {
+      "id": 1329,
+      "name": "Sei",
+      "key": "sei",
+      "chainType": "EVM",
+      "nativeToken": "SEI",
+      "logoURI": "https://raw.githubusercontent.com/lifinance/types/main/src/assets/icons/chains/sei.svg"
+    },
+    {
+      "id": 13371,
+      "name": "Immutable zkEVM",
+      "key": "imx",
+      "chainType": "EVM",
+      "nativeToken": "IMX",
+      "logoURI": "https://raw.githubusercontent.com/lifinance/types/main/src/assets/icons/chains/imx.svg"
+    },
+    {
+      "id": 14,
+      "name": "Flare",
+      "key": "flr",
+      "chainType": "EVM",
+      "nativeToken": "FLR",
+      "logoURI": "https://raw.githubusercontent.com/lifinance/types/main/src/assets/icons/chains/flare.svg"
+    },
+    {
+      "id": 146,
+      "name": "Sonic",
+      "key": "son",
+      "chainType": "EVM",
+      "nativeToken": "S",
+      "logoURI": "https://raw.githubusercontent.com/lifinance/types/main/src/assets/icons/chains/sonic.svg"
+    },
+    {
+      "id": 1480,
+      "name": "Vana",
+      "key": "van",
+      "chainType": "EVM",
+      "nativeToken": "VAN",
+      "logoURI": "https://raw.githubusercontent.com/lifinance/types/main/src/assets/icons/chains/vana.svg"
+    },
+    {
+      "id": 1625,
+      "name": "Gravity",
+      "key": "gra",
+      "chainType": "EVM",
+      "nativeToken": "G",
+      "logoURI": "https://raw.githubusercontent.com/lifinance/types/main/src/assets/icons/chains/gravity.svg"
+    },
+    {
+      "id": 167000,
+      "name": "Taiko",
+      "key": "tai",
+      "chainType": "EVM",
+      "nativeToken": "ETH",
+      "logoURI": "https://raw.githubusercontent.com/lifinance/types/main/src/assets/icons/chains/taiko.svg"
+    },
+    {
+      "id": 1868,
+      "name": "Soneium",
+      "key": "soe",
+      "chainType": "EVM",
+      "nativeToken": "ETH",
+      "logoURI": "https://raw.githubusercontent.com/lifinance/types/main/src/assets/icons/chains/soneium.svg"
+    },
+    {
+      "id": 1923,
+      "name": "Swellchain",
+      "key": "swl",
+      "chainType": "EVM",
+      "nativeToken": "ETH",
+      "logoURI": "https://raw.githubusercontent.com/lifinance/types/main/src/assets/icons/chains/swell.svg"
+    },
+    {
+      "id": 2020,
+      "name": "Ronin",
+      "key": "ron",
+      "chainType": "EVM",
+      "nativeToken": "RON",
+      "logoURI": "https://raw.githubusercontent.com/lifinance/types/main/src/assets/icons/chains/ronin.svg"
+    },
+    {
+      "id": 204,
+      "name": "opBNB",
+      "key": "opb",
+      "chainType": "EVM",
+      "nativeToken": "BNB",
+      "logoURI": "https://raw.githubusercontent.com/lifinance/types/main/src/assets/icons/chains/opbnb.svg"
+    },
+    {
+      "id": 21000000,
+      "name": "Corn",
+      "key": "crn",
+      "chainType": "EVM",
+      "nativeToken": "BTCN",
+      "logoURI": "https://raw.githubusercontent.com/lifinance/types/main/src/assets/icons/chains/corn.svg"
+    },
+    {
+      "id": 232,
+      "name": "Lens",
+      "key": "lns",
+      "chainType": "EVM",
+      "nativeToken": "GHO",
+      "logoURI": "https://raw.githubusercontent.com/lifinance/types/main/src/assets/icons/chains/lens.svg"
+    },
+    {
+      "id": 25,
+      "name": "Cronos",
+      "key": "cro",
+      "chainType": "EVM",
+      "nativeToken": "CRO",
+      "logoURI": "https://raw.githubusercontent.com/lifinance/types/main/src/assets/icons/chains/cronos.svg"
+    },
+    {
+      "id": 252,
+      "name": "Fraxtal",
+      "key": "fra",
+      "chainType": "EVM",
+      "nativeToken": "FRAX",
+      "logoURI": "https://raw.githubusercontent.com/lifinance/types/main/src/assets/icons/chains/fraxtal.svg"
+    },
+    {
+      "id": 2741,
+      "name": "Abstract",
+      "key": "abs",
+      "chainType": "EVM",
+      "nativeToken": "ETH",
+      "logoURI": "https://raw.githubusercontent.com/lifinance/types/main/src/assets/icons/chains/abstract.svg"
+    },
+    {
+      "id": 288,
+      "name": "Boba",
+      "key": "bob",
+      "chainType": "EVM",
+      "nativeToken": "ETH",
+      "logoURI": "https://raw.githubusercontent.com/lifinance/types/main/src/assets/icons/chains/boba.svg"
+    },
+    {
+      "id": 30,
+      "name": "Rootstock",
+      "key": "rsk",
+      "chainType": "EVM",
+      "nativeToken": "RBTC",
+      "logoURI": "https://raw.githubusercontent.com/lifinance/types/main/src/assets/icons/chains/rootstock.svg"
+    },
+    {
+      "id": 324,
+      "name": "zkSync",
+      "key": "era",
+      "chainType": "EVM",
+      "nativeToken": "ETH",
+      "logoURI": "https://raw.githubusercontent.com/lifinance/types/main/src/assets/icons/chains/zksync.svg"
+    },
+    {
+      "id": 33139,
+      "name": "Apechain",
+      "key": "ape",
+      "chainType": "EVM",
+      "nativeToken": "APE",
+      "logoURI": "https://raw.githubusercontent.com/lifinance/types/main/src/assets/icons/chains/apechain.svg"
+    },
+    {
+      "id": 34443,
+      "name": "Mode",
+      "key": "mod",
+      "chainType": "EVM",
+      "nativeToken": "ETH",
+      "logoURI": "https://raw.githubusercontent.com/lifinance/types/main/src/assets/icons/chains/mode.svg"
+    },
+    {
+      "id": 42220,
+      "name": "Celo",
+      "key": "cel",
+      "chainType": "EVM",
+      "nativeToken": "CELO",
+      "logoURI": "https://raw.githubusercontent.com/lifinance/types/main/src/assets/icons/chains/celo.svg"
+    },
+    {
+      "id": 42793,
+      "name": "Etherlink",
+      "key": "etl",
+      "chainType": "EVM",
+      "nativeToken": "XTZ",
+      "logoURI": "https://raw.githubusercontent.com/lifinance/types/main/src/assets/icons/chains/etherlink.svg"
+    },
+    {
+      "id": 43111,
+      "name": "Hemi",
+      "key": "hmi",
+      "chainType": "EVM",
+      "nativeToken": "ETH",
+      "logoURI": "https://raw.githubusercontent.com/lifinance/types/main/src/assets/icons/chains/hemi.svg"
+    },
+    {
+      "id": 480,
+      "name": "World Chain",
+      "key": "wcc",
+      "chainType": "EVM",
+      "nativeToken": "ETH",
+      "logoURI": "https://raw.githubusercontent.com/lifinance/types/main/src/assets/icons/chains/world.svg"
+    },
+    {
+      "id": 50,
+      "name": "XDC",
+      "key": "xdc",
+      "chainType": "EVM",
+      "nativeToken": "XDC",
+      "logoURI": "https://raw.githubusercontent.com/lifinance/types/main/src/assets/icons/chains/xdc.svg"
+    },
+    {
+      "id": 5000,
+      "name": "Mantle",
+      "key": "mnt",
+      "chainType": "EVM",
+      "nativeToken": "MNT",
+      "logoURI": "https://raw.githubusercontent.com/lifinance/types/main/src/assets/icons/chains/mantle.svg"
+    },
+    {
+      "id": 50104,
+      "name": "Sophon",
+      "key": "sop",
+      "chainType": "EVM",
+      "nativeToken": "SOPH",
+      "logoURI": "https://raw.githubusercontent.com/lifinance/types/main/src/assets/icons/chains/sophon.svg"
+    },
+    {
+      "id": 534352,
+      "name": "Scroll",
+      "key": "scl",
+      "chainType": "EVM",
+      "nativeToken": "ETH",
+      "logoURI": "https://raw.githubusercontent.com/lifinance/types/main/src/assets/icons/chains/scroll.svg"
+    },
+    {
+      "id": 55244,
+      "name": "Superposition",
+      "key": "sup",
+      "chainType": "EVM",
+      "nativeToken": "ETH",
+      "logoURI": "https://raw.githubusercontent.com/lifinance/types/main/src/assets/icons/chains/superposition.svg"
+    },
+    {
+      "id": 57073,
+      "name": "Ink",
+      "key": "ink",
+      "chainType": "EVM",
+      "nativeToken": "ETH",
+      "logoURI": "https://raw.githubusercontent.com/lifinance/types/main/src/assets/icons/chains/ink.svg"
+    },
+    {
+      "id": 59144,
+      "name": "Linea",
+      "key": "lna",
+      "chainType": "EVM",
+      "nativeToken": "ETH",
+      "logoURI": "https://raw.githubusercontent.com/lifinance/types/main/src/assets/icons/chains/linea.svg"
+    },
+    {
+      "id": 60808,
+      "name": "BOB",
+      "key": "boc",
+      "chainType": "EVM",
+      "nativeToken": "ETH",
+      "logoURI": "https://raw.githubusercontent.com/lifinance/types/main/src/assets/icons/chains/bob.svg"
+    },
+    {
+      "id": 747,
+      "name": "Flow",
+      "key": "flw",
+      "chainType": "EVM",
+      "nativeToken": "FLOW",
+      "logoURI": "https://raw.githubusercontent.com/lifinance/types/main/src/assets/icons/chains/flow.svg"
+    },
+    {
+      "id": 747474,
+      "name": "Katana",
+      "key": "kat",
+      "chainType": "EVM",
+      "nativeToken": "ETH",
+      "logoURI": "https://raw.githubusercontent.com/lifinance/types/main/src/assets/icons/chains/katana.svg"
+    },
+    {
+      "id": 80094,
+      "name": "Berachain",
+      "key": "ber",
+      "chainType": "EVM",
+      "nativeToken": "BERA",
+      "logoURI": "https://raw.githubusercontent.com/lifinance/types/main/src/assets/icons/chains/bera.svg"
+    },
+    {
+      "id": 81457,
+      "name": "Blast",
+      "key": "bls",
+      "chainType": "EVM",
+      "nativeToken": "ETH",
+      "logoURI": "https://raw.githubusercontent.com/lifinance/types/main/src/assets/icons/chains/blast.svg"
+    },
+    {
+      "id": 8217,
+      "name": "Kaia",
+      "key": "kai",
+      "chainType": "EVM",
+      "nativeToken": "KAIA",
+      "logoURI": "https://raw.githubusercontent.com/lifinance/types/main/src/assets/icons/chains/kaia.svg"
+    },
+    {
+      "id": 88,
+      "name": "Viction",
+      "key": "vic",
+      "chainType": "EVM",
+      "nativeToken": "VIC",
+      "logoURI": "https://raw.githubusercontent.com/lifinance/types/main/src/assets/icons/chains/viction.svg"
+    },
+    {
+      "id": 9745,
+      "name": "Plasma",
+      "key": "pla",
+      "chainType": "EVM",
+      "nativeToken": "XPL",
+      "logoURI": "https://raw.githubusercontent.com/lifinance/types/main/src/assets/icons/chains/plasma.svg"
+    },
+    {
+      "id": 988,
+      "name": "Stable",
+      "key": "sta",
+      "chainType": "EVM",
+      "nativeToken": "GUSDT",
+      "logoURI": "https://raw.githubusercontent.com/lifinance/types/main/src/assets/icons/chains/stable.svg"
+    },
+    {
+      "id": 98866,
+      "name": "Plume",
+      "key": "plu",
+      "chainType": "EVM",
+      "nativeToken": "PLUME",
+      "logoURI": "https://raw.githubusercontent.com/lifinance/types/main/src/assets/icons/chains/plume.svg"
+    }
+  ]
+}
